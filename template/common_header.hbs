@@ -60,8 +60,7 @@
             <ul class="menu">
                 {{#each top_nav}}
                 <li><a href="{{url}}"
-                        class="{{#if selected}}selected{{/if}}{{#if external}} external{{/if}}">{{{title}}}{{#if
-                        external}}{{> link_icon }}{{/if}}</a></li>
+                        class="{{#if selected}}selected{{/if}}">{{{title}}}</a></li>
                 {{/each}}
                 <li>
                     <div onclick="switchTheme()" style="display:inline"><i class="fas fa-moon"></i></div>
@@ -78,8 +77,7 @@
                 <ul class="burger-menu">
                     {{#each top_nav}}
                     <li><a href="{{url}}"
-                            class="{{#if selected}}selected{{/if}}{{#if external}} external{{/if}}">{{{title}}}{{#if
-                            external}}{{> link_icon }}{{/if}}</a></li>
+                            class="{{#if selected}}selected{{/if}}">{{{title}}}</a></li>
                     {{/each}}
                     <li>
                         <div id="loginItem"><a href="/login">Login</a></div>
