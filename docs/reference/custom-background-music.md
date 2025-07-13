@@ -5,7 +5,7 @@ On the PSP, some games have support for playing audio files that you put on the 
 Usually they require putting the music in a specific folder and then enabling the feature through the ingame sound options menu.
 
 Some games also support selecting between the main folder and its subfolders.
-This can be used to simulate playlists or albums.
+This can be used to organize your songs into playlists or albums.
 
 If you know some details that are missing below, [contact me](/contact).
 
@@ -41,12 +41,12 @@ I think this list is pretty close to complete:
 - Pro Evolution Soccer 2014
 - SD Gundam G Generation Overworld
 - Test Drive Unlimited
-- TOCA Race Driver 2
-- TOCA Race Driver 3 Challenge
+- TOCA Race Driver 2 / DTM Race Driver 2 / V8 Supercars Australia 2 / Race Driver 2006
+- TOCA Race Driver 3 Challenge / DTM Race Driver 3 Challenge / V8 Supercars Australia 3: Shootout
 - Ultimate Board Game Collection
 - Untold Legends II
 - WipEout Pulse
-- WipEout Pure
+- WipEout Pure (to be confirmed)
 - World Soccer Winning Eleven 2014: Aoki Samurai no Chousen
 
 Homebrew are not listed.
@@ -62,12 +62,13 @@ In the future, this will be possible by creating a `ROOT` folder in the `PSP` fo
 | Beats | `ms:/PSP/MUSIC` | |
 | Crazy Taxi: Fare Wars | `ms:/MUSIC` | |
 | Gran Turismo | `ms:/MUSIC` | feature must be unlocked first;<br />subfolder selection supported |
-| TOCA Race Driver 3 Challenge | `ms:/PSP/MUSIC` | subfolder selection supported |
+| TOCA Race Driver 3 Challenge,<br />DTM Race Driver 3 Challenge,<br />V8 Supercars Australia 3: Shootout | `ms:/PSP/MUSIC` | subfolder selection supported |
 | WipEout Pulse | `ms:/MUSIC/WIPEOUT` | |
 
-In Gran Turismo you must first clear all [Driving Challenges](https://gran-turismo.fandom.com/wiki/Driving_Challenges_(GTPSP)) in blocks A and B to unlock this feature, then it will be available through the options menu.
+In Gran Turismo to unlock custom music you must first [clear all Driving Challenges in blocks A and B](https://gran-turismo.fandom.com/wiki/Driving_Challenges_(GTPSP)), the rating doesn't matter.
+Then it will be available through the options menu.
 
-Note: Games might have trouble reading non-standard MP3 files. If you suspect that your file is impaired, try opening and exporting it with [Audacity](https://www.audacityteam.org/).
+Note: games might have trouble reading non-standard MP3 files. If you suspect that your file is impaired, try opening and exporting it with [Audacity](https://www.audacityteam.org/).
 
 ## Games that read Atrac3+ files
 
@@ -78,39 +79,66 @@ Originally tools such as **[Exact Audio Copy PSP Edition](https://archive.org/de
 However, EAC doesn't work on modern Windows and RCT only supports conversion from audio CD's.
 
 Nowadays we can also use **[ATRACTool Reloaded](https://github.com/XyLe-GBP/ATRACTool-Reloaded)** for this purpose.
-It can convert Waveform Audio File Format (`.WAV`) files into Atrac3+ and other Sony formats.
+It can convert Waveform Audio File Format (`.WAV`) files into Atrac3+ (`.at3`) and other Sony formats.
 
 Simply download and install the tool, along with the adequate .NET Desktop Runtime version.
 You can safely ignore the warning about OpenMG upon starting it.
 
-ATRACTool Reloaded works with both mono and stereo `.WAV` files in most of the common bitrates.
-However, the file must be encoded in 16-bit PCM mode and the sample rate must be 44,100 Hz (44.1 kHz).
+ATRACTool Reloaded works with both mono and stereo `.WAV` files with most of the common bitrates.
+However, the file must be encoded in 16-bit PCM mode with a sample rate of 44,100 Hz (44.1 kHz).
+
+**>insert screenshot here<**
 
 If your file is not in `.WAV` format or is encoded differently, you have to convert it to such, e.g. via [Audacity](https://www.audacityteam.org/).
 Simply open your file, and select `File -> Export Audio...` from the menubar.
 
 **>insert screenshot here<**
 
-### Grand Theft Auto: Liberty City Stories
+In case you want to try out the feature first before you commit yourself to converting your files, I uploaded 2 songs for you, already in Atrac3+:
+- **>insert link to file1 here<**
+- **>insert link to file2 here<**
 
+### Grand Theft Auto: Liberty City Stories & Vice City Stories
+
+Custom music files go into a special folder next to the save folders.
+
+The filenames must end with the `.gta` extension!
+Make sure to rename your files accordingly, e.g. `We_Wish_You_a_Merry_Christmas.gta`!
+
+Find the custom tracks folder for your Liberty City Stories version here:
 | Game Version | Game Serial | Folder |
 | --- | --- | --- |
+| American,<br />Korean | ULUS10041 |  |
+| European,<br />German | ULES00151,<br />ULES00182 |  |
+| Japanese CAPCOM,<br /> Japanese Rockstar Classics | ULJM05255,<br />ULJM05885 |  |
+| Sindacco Chronicles (romhack) | ULUS01826 | `ms:/PSP/SAVEDATA/ULUS01826CUSTOMTRACKS` |
 
-### Grand Theft Auto: Vice City Stories
-
+Find the custom tracks folder for your Vice City Stories version here:
 | Game Version | Game Serial | Folder |
 | --- | --- | --- |
-| American |  |  |
-| European,<br />German | <br /> |  |
-| Japanese CAPCOM,<br /> Japanese Rockstar Classics | <br /> |  |
+| American | ULUS10160 | `ms:/PSP/SAVEDATA/ULUS10160CUSTOMTRACKS` |
+| European,<br />German | ULES00502,<br />ULES00503 |  |
+| Japanese CAPCOM,<br /> Japanese Rockstar Classics | ULJM05297,<br />ULJM05884 |  |
 
 ### TOCA Race Driver 2
 
+Custom music files go into the folder of the saves.
+The game supports subfolder selection.
+
+The filenames must end with the `.toc` extension!
+Make sure to rename your files accordingly, e.g. `We_Wish_You_a_Merry_Christmas.toc`!
+
+Find the save folder for your game version here:
 | Game Title | Region | Serial | Folder |
 | --- | --- | --- | --- |
+| Race Driver 2006 | America | ULUS10096 | `ms:/PSP/SAVEDATA/ULUS100960000` |
 | TOCA Race Driver 2 | Europe | ULES00040 | `ms:/PSP/SAVEDATA/ULES000400000` |
-|  |  |  |
-|  |  |  |
-|  |  |  |
+| DTM Race Driver 2 | Germany | ULES00041 | `ms:/PSP/SAVEDATA/ULES000410000` |
+| V8 Supercars Australia 2 | Australia | ULES00042 | `ms:/PSP/SAVEDATA/ULES000420000` |
 
-The game also supports subfolder selection.
+The following versions of the game **DO NOT** support custom music:
+| Game Title | Region | Serial |
+| --- | --- | --- |
+| TOCA Race Driver 2 | Japan | ULJM05160 |
+
+The European and Japanese versions of the game are also known as TOCA Race Driver 2: Ultimate Racing Simulator.
