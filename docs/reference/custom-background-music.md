@@ -9,9 +9,11 @@ This can be used to organize your songs into playlists or albums.
 
 If you know some details that are missing below, [contact me](/contact).
 
+More and accurate information will be available on this page over time.
+
 ## List of games that support this feature
 
-I think this list is pretty close to complete:
+This list should be pretty close to complete:
 - ATV Offroad Fury: Blazin' Trails
 - Beats
 - Boom Beats
@@ -29,6 +31,8 @@ I think this list is pretty close to complete:
 - Heroes' VS
 - MLB 08: The Show
 - MotorStorm: Arctic Edge
+- NBA Live 07
+- NBA Live 08
 - NBA Live 09
 - NBA Live 10
 - Need for Speed Carbon
@@ -41,11 +45,11 @@ I think this list is pretty close to complete:
 - Pro Evolution Soccer 2014 / World Soccer: Winning Eleven 2014
 - SD Gundam G Generation Overworld
 - Surf's Up
-- Test Drive Unlimited
+- Test Drive Unlimited <sup>(how? there's no option?)</sup>
 - TOCA Race Driver 2 / DTM Race Driver 2 / V8 Supercars Australia 2 / Race Driver 2006
 - TOCA Race Driver 3 Challenge / DTM Race Driver 3 Challenge / V8 Supercars Australia 3: Shootout
 - Ultimate Board Game Collection
-- Untold Legends: The Warrior's Code (there's no option?)
+- Untold Legends: The Warrior's Code <sup>(how? there's no option?)</sup>
 - WipEout Pulse
 
 Homebrew are not listed.
@@ -56,6 +60,7 @@ Note: Several games require you to put the music into `ms:/MUSIC` at the root of
 Unfortunately this can't be done on Android if your device uses scoped storage and your memstick folder is named exactly `PSP`, because then `PSP` is the actual root.
 In the future, this will be possible by creating a `ROOT` folder in the `PSP` folder to simulate this.
 
+Find the custom music folder for your game here: <sup>table is not yet complete</sup>
 | Game | Folder | Notes |
 | --- | --- | --- |
 | Beats | `ms:/PSP/MUSIC` | |
@@ -69,12 +74,14 @@ In the future, this will be possible by creating a `ROOT` folder in the `PSP` fo
 In Gran Turismo to unlock custom music you must first [clear all Driving Challenges in blocks A and B](https://gran-turismo.fandom.com/wiki/Driving_Challenges_(GTPSP)), the rating doesn't matter.
 Then it will be available through the options menu.
 
-Note: games might have trouble reading non-standard MP3 files. If you suspect that your file is impaired, try opening and exporting it with a constant bitrate using [Audacity](https://www.audacityteam.org/).
+Note: Games might have trouble reading non-standard MP3 files.
+If you suspect that your file is impaired, try opening and exporting it with a constant bitrate using [Audacity](https://www.audacityteam.org/).
 
 ## Games that read Atrac3+ files
 
 Some games read Atrac3+ encoded files instead of MP3's for custom music.
 For these games you need to convert your songs to the proper format first.
+The guide here requires a Windows PC.
 
 Originally tools such as **[Exact Audio Copy PSP Edition](https://archive.org/details/codemasters-eacsetup)** by Codemasters or **[Rockstar Custom Tracks](https://thegtaplace.com/downloads/f1123-rockstar-custom-tracks)** by Rockstar Games were intended to be used.
 However, EAC doesn't work on modern Windows and RCT only supports conversion from audio CD's.
@@ -95,9 +102,12 @@ Simply open your file, and select `File -> Export Audio...` from the menubar.
 
 **>insert screenshot here<**
 
-In case you want to try out the feature first before you commit yourself to encoding your files, I uploaded 2 songs for you, already in Atrac3+:
+In case you want to try out the feature first before you commit yourself to encoding your files, we provide 2 songs for you, already in Atrac3+:
 - **>insert link to file1 here<**
 - **>insert link to file2 here<**
+
+Tip: Some games have their official soundtrack encoded in Atrac3+.
+Try extracting a radio station file from GTA and loading it as a custom song in TOCA Race Driver 2.
 
 ### Grand Theft Auto: Liberty City Stories & Vice City Stories
 
@@ -106,17 +116,16 @@ Custom music files go into a special folder next to the save data folders.
 The filenames must end with the `.gta` extension!
 Make sure to rename your files accordingly, e.g. `We_Wish_You_a_Merry_Christmas.gta`!
 
-The songs must be at least several seconds long (9 is enough).
-Short songs are ignored by the game.
+The games ignore songs that are shorter than 5 seconds.
 
 Find the custom tracks folder for your Liberty City Stories version here:
 | Game Version | Game Serial | Folder |
 | --- | --- | --- |
-| American,<br />Korean | ULUS10041 |  |
-| European | ULES00151 |  |
-| German | ULES00182 |  |
-| Japanese CAPCOM,<br />Japanese Rockstar Classics | ULJM05255,<br />ULJM05885 |  |
-| Sindacco Chronicles (romhack) | ULUS01826 | `ms:/PSP/SAVEDATA/ULUS01826CUSTOMTRACKS` |
+| American,<br />Korean | ULUS10041 | `ms:/PSP/SAVEDATA/ULUS10041CUSTOMTRACKS` |
+| European | ULES00151 | `ms:/PSP/SAVEDATA/ULES00151CUSTOMTRACKS` |
+| German | ULES00182 | `ms:/PSP/SAVEDATA/ULES00182CUSTOMTRACKS` |
+| Japanese CAPCOM,<br />Japanese Rockstar Classics | ULJM05255,<br />ULJM05885 | `ms:/PSP/SAVEDATA/ULJM05255CUSTOMTRACKS` |
+| Sindacco Chronicles (romhack, all versions) | ULUS01826 | `ms:/PSP/SAVEDATA/ULUS01826CUSTOMTRACKS` |
 
 Find the custom tracks folder for your Vice City Stories version here:
 | Game Version | Game Serial | Folder |
