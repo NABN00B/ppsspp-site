@@ -9,7 +9,7 @@ This can be used to organize your songs into playlists or albums.
 
 If you know some details that are missing below, [contact me](/contact).
 
-More and accurate information will be available on this page over time.
+More and better information will be available on this page over time.
 
 ## List of games that support this feature
 
@@ -56,9 +56,10 @@ Homebrew are not listed.
 
 ## Games that read MP3 files
 
-Note: Several games require you to put the music into `ms:/MUSIC` at the root of the memory stick.
-Unfortunately this can't be done on Android if your device uses scoped storage and your memstick folder is named exactly `PSP`, because then `PSP` is the actual root.
-In the future, this will be possible by creating a `ROOT` folder in the `PSP` folder to simulate this.
+<div class="alert alert-warning">Several games require you to put the music into <code>ms:/MUSIC</code> at the root of the memory stick.
+    Unfortunately this can't be done on Android if your device uses scoped storage and your memstick folder is named exactly <code>PSP</code>, because then <code>PSP</code> is the actual root.
+    In the future, this will be possible by creating a <code>ROOT</code> folder in the <code>PSP</code> folder to simulate this.
+</div>
 
 Find the custom music folder for your game here: <sup>table is not yet complete</sup>
 | Game | Folder | Notes |
@@ -74,8 +75,9 @@ Find the custom music folder for your game here: <sup>table is not yet complete<
 In Gran Turismo to unlock custom music you must first [clear all Driving Challenges in blocks A and B](https://gran-turismo.fandom.com/wiki/Driving_Challenges_(GTPSP)), the rating doesn't matter.
 Then it will be available through the options menu.
 
-Note: Games might have trouble reading non-standard MP3 files.
-If you suspect that your file is impaired, try opening and exporting it with a constant bitrate using [Audacity](https://www.audacityteam.org/).
+<div class="alert alert-info">Games might have trouble reading non-standard MP3 files.
+    If you suspect that your file is impaired, try opening and exporting it with a constant bitrate using <a href="https://www.audacityteam.org/">Audacity</a>.
+</div>
 
 ## Games that read Atrac3+ files
 
@@ -95,19 +97,21 @@ You can safely ignore the warning about OpenMG upon starting it.
 ATRACTool Reloaded works with both mono and stereo `.WAV` files with most of the common bitrates.
 However, the file must be encoded in 16-bit PCM mode with a sample rate of 44,100 Hz (44.1 kHz).
 
-**>insert screenshot here<**
+![ATRACTool Reloaded failed to encode the ATRAC file. Log: Not Supported Param](/static/img/docs/custom_background_music/custombgm_atrac3_atractool_fail.jpg)
 
-If your file is not in `.WAV` format or is encoded differently, you have to convert it to such, e.g. via [Audacity](https://www.audacityteam.org/).
-Simply open your file, and select `File -> Export Audio...` from the menubar.
+If you get an error while loading or encoding a file, it either means that it's not in `.WAV` format or that it's encoded differently.
+You have to re-encode it to such yourself, e.g. via [Audacity](https://www.audacityteam.org/).
+Simply open the file, and select `File -> Export Audio...` from the menubar.
 
-**>insert screenshot here<**
+![When exporting to WAV, make sure to set Channels either to "Mono" or "Stereo", Sample Rate to "44100 Hz" and Encoding to "Signed 16-bit PCM".](/static/img/docs/custom_background_music/custombgm_atrac3_audacity_export.jpg)
 
 In case you want to try out the feature first before you commit yourself to encoding your files, we provide 2 songs for you, already in Atrac3+:
-- **>insert link to file1 here<**
-- **>insert link to file2 here<**
+- [eu-short.at3](/static/img/docs/custom_background_music/eu-short.at3)
+- [We_Wish_You_a_Merry_Christmas.at3](/static/img/docs/custom_background_music/We_Wish_You_a_Merry_Christmas.at3)
 
-Tip: Some games have their official soundtrack encoded in Atrac3+.
-Try extracting a radio station file from GTA and loading it as a custom song in TOCA Race Driver 2.
+<div class="alert alert-info">Tip: Some games have their official soundtrack encoded in Atrac3+.
+    Try extracting a radio station file from GTA and loading it as a custom song in TOCA Race Driver 2.
+</div>
 
 ### Grand Theft Auto: Liberty City Stories & Vice City Stories
 
@@ -159,4 +163,4 @@ The following versions of the game **DO NOT** support custom music:
 | --- | --- | --- |
 | TOCA Race Driver 2 | Japan | ULJM05160 |
 
-The European and Japanese versions of the game are also known as TOCA Race Driver 2: Ultimate Racing Simulator.
+The European and Japanese versions of the game are also known as **TOCA Race Driver 2: Ultimate Racing Simulator**.
