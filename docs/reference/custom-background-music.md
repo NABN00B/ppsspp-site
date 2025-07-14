@@ -45,7 +45,7 @@ I think this list is pretty close to complete:
 - TOCA Race Driver 2 / DTM Race Driver 2 / V8 Supercars Australia 2 / Race Driver 2006
 - TOCA Race Driver 3 Challenge / DTM Race Driver 3 Challenge / V8 Supercars Australia 3: Shootout
 - Ultimate Board Game Collection
-- Untold Legends: The Warrior's Code
+- Untold Legends: The Warrior's Code (there's no option?)
 - WipEout Pulse
 
 Homebrew are not listed.
@@ -60,14 +60,16 @@ In the future, this will be possible by creating a `ROOT` folder in the `PSP` fo
 | --- | --- | --- |
 | Beats | `ms:/PSP/MUSIC` | |
 | Crazy Taxi: Fare Wars | `ms:/MUSIC` | |
-| Gran Turismo | `ms:/MUSIC` | feature must be unlocked first;<br />subfolder selection supported |
+| Gran Turismo | `ms:/MUSIC` | unlockable feature;<br />subfolder selection supported |
+| Surf's Up | `ms:/MUSIC/SURFSUP` | bitrate (kb/s): 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192;<br />sample rate: 44.1khz;<br />max 20 songs supported |
 | TOCA Race Driver 3 Challenge,<br />DTM Race Driver 3 Challenge,<br />V8 Supercars Australia 3: Shootout | `ms:/PSP/MUSIC` | subfolder selection supported |
+| Ultimate Board Game Collection | `ms:/PSP/MUSIC`,<br />`ms:/MUSIC` | subfolders supported |
 | WipEout Pulse | `ms:/MUSIC/WIPEOUT` | |
 
 In Gran Turismo to unlock custom music you must first [clear all Driving Challenges in blocks A and B](https://gran-turismo.fandom.com/wiki/Driving_Challenges_(GTPSP)), the rating doesn't matter.
 Then it will be available through the options menu.
 
-Note: games might have trouble reading non-standard MP3 files. If you suspect that your file is impaired, try opening and exporting it with [Audacity](https://www.audacityteam.org/).
+Note: games might have trouble reading non-standard MP3 files. If you suspect that your file is impaired, try opening and exporting it with a constant bitrate using [Audacity](https://www.audacityteam.org/).
 
 ## Games that read Atrac3+ files
 
@@ -111,7 +113,8 @@ Find the custom tracks folder for your Liberty City Stories version here:
 | Game Version | Game Serial | Folder |
 | --- | --- | --- |
 | American,<br />Korean | ULUS10041 |  |
-| European,<br />German | ULES00151,<br />ULES00182 |  |
+| European | ULES00151 |  |
+| German | ULES00182 |  |
 | Japanese CAPCOM,<br />Japanese Rockstar Classics | ULJM05255,<br />ULJM05885 |  |
 | Sindacco Chronicles (romhack) | ULUS01826 | `ms:/PSP/SAVEDATA/ULUS01826CUSTOMTRACKS` |
 
@@ -119,8 +122,9 @@ Find the custom tracks folder for your Vice City Stories version here:
 | Game Version | Game Serial | Folder |
 | --- | --- | --- |
 | American | ULUS10160 | `ms:/PSP/SAVEDATA/ULUS10160CUSTOMTRACKS` |
-| European,<br />German | ULES00502,<br />ULES00503 |  |
-| Japanese CAPCOM,<br />Japanese Rockstar Classics | ULJM05297,<br />ULJM05884 |  |
+| European | ULES00502 | `ms:/PSP/SAVEDATA/ULES00502CUSTOMTRACKS` |
+| German | ULES00503 | `ms:/PSP/SAVEDATA/ULES00503CUSTOMTRACKS` |
+| Japanese CAPCOM,<br />Japanese Rockstar Classics | ULJM05297,<br />ULJM05884 | `ms:/PSP/SAVEDATA/ULJM05297CUSTOMTRACKS` |
 
 ### TOCA Race Driver 2
 
