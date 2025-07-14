@@ -26,7 +26,7 @@ I think this list is pretty close to complete:
 - Hatsune Miku: Project DIVA
 - Hatsune Miku: Project DIVA 2nd
 - Hatsune Miku: Project DIVA Extend
-- Heroes' VS ([#5866]?)
+- Heroes' VS
 - MLB 08: The Show
 - MotorStorm: Arctic Edge
 - NBA Live 09
@@ -35,19 +35,18 @@ I think this list is pretty close to complete:
 - Need for Speed Pro Street
 - Need for Speed Undercover
 - Need for Speed Shift
-- Pro Evolution Soccer 2011
-- Pro Evolution Soccer 2012
-- Pro Evolution Soccer 2013
-- Pro Evolution Soccer 2014
+- Pro Evolution Soccer 2011 / World Soccer: Winning Eleven 2011
+- Pro Evolution Soccer 2012 / World Soccer: Winning Eleven 2012
+- Pro Evolution Soccer 2013 / World Soccer: Winning Eleven 2013
+- Pro Evolution Soccer 2014 / World Soccer: Winning Eleven 2014
 - SD Gundam G Generation Overworld
+- Surf's Up
 - Test Drive Unlimited
 - TOCA Race Driver 2 / DTM Race Driver 2 / V8 Supercars Australia 2 / Race Driver 2006
 - TOCA Race Driver 3 Challenge / DTM Race Driver 3 Challenge / V8 Supercars Australia 3: Shootout
 - Ultimate Board Game Collection
-- Untold Legends II
+- Untold Legends: The Warrior's Code
 - WipEout Pulse
-- WipEout Pure (to be confirmed)
-- World Soccer Winning Eleven 2014: Aoki Samurai no Chousen
 
 Homebrew are not listed.
 
@@ -72,14 +71,14 @@ Note: games might have trouble reading non-standard MP3 files. If you suspect th
 
 ## Games that read Atrac3+ files
 
-Some games read Atrac3+ format files instead of MP3's for custom music.
+Some games read Atrac3+ encoded files instead of MP3's for custom music.
 For these games you need to convert your songs to the proper format first.
 
 Originally tools such as **[Exact Audio Copy PSP Edition](https://archive.org/details/codemasters-eacsetup)** by Codemasters or **[Rockstar Custom Tracks](https://thegtaplace.com/downloads/f1123-rockstar-custom-tracks)** by Rockstar Games were intended to be used.
 However, EAC doesn't work on modern Windows and RCT only supports conversion from audio CD's.
 
 Nowadays we can also use **[ATRACTool Reloaded](https://github.com/XyLe-GBP/ATRACTool-Reloaded)** for this purpose.
-It can convert Waveform Audio File Format (`.WAV`) files into Atrac3+ (`.at3`) and other Sony formats.
+It can encode Waveform Audio File Format (`.WAV`) audio into Atrac3+ (`.at3`) and other Sony formats.
 
 Simply download and install the tool, along with the adequate .NET Desktop Runtime version.
 You can safely ignore the warning about OpenMG upon starting it.
@@ -94,23 +93,26 @@ Simply open your file, and select `File -> Export Audio...` from the menubar.
 
 **>insert screenshot here<**
 
-In case you want to try out the feature first before you commit yourself to converting your files, I uploaded 2 songs for you, already in Atrac3+:
+In case you want to try out the feature first before you commit yourself to encoding your files, I uploaded 2 songs for you, already in Atrac3+:
 - **>insert link to file1 here<**
 - **>insert link to file2 here<**
 
 ### Grand Theft Auto: Liberty City Stories & Vice City Stories
 
-Custom music files go into a special folder next to the save folders.
+Custom music files go into a special folder next to the save data folders.
 
 The filenames must end with the `.gta` extension!
 Make sure to rename your files accordingly, e.g. `We_Wish_You_a_Merry_Christmas.gta`!
+
+The songs must be at least several seconds long (9 is enough).
+Short songs are ignored by the game.
 
 Find the custom tracks folder for your Liberty City Stories version here:
 | Game Version | Game Serial | Folder |
 | --- | --- | --- |
 | American,<br />Korean | ULUS10041 |  |
 | European,<br />German | ULES00151,<br />ULES00182 |  |
-| Japanese CAPCOM,<br /> Japanese Rockstar Classics | ULJM05255,<br />ULJM05885 |  |
+| Japanese CAPCOM,<br />Japanese Rockstar Classics | ULJM05255,<br />ULJM05885 |  |
 | Sindacco Chronicles (romhack) | ULUS01826 | `ms:/PSP/SAVEDATA/ULUS01826CUSTOMTRACKS` |
 
 Find the custom tracks folder for your Vice City Stories version here:
@@ -118,15 +120,18 @@ Find the custom tracks folder for your Vice City Stories version here:
 | --- | --- | --- |
 | American | ULUS10160 | `ms:/PSP/SAVEDATA/ULUS10160CUSTOMTRACKS` |
 | European,<br />German | ULES00502,<br />ULES00503 |  |
-| Japanese CAPCOM,<br /> Japanese Rockstar Classics | ULJM05297,<br />ULJM05884 |  |
+| Japanese CAPCOM,<br />Japanese Rockstar Classics | ULJM05297,<br />ULJM05884 |  |
 
 ### TOCA Race Driver 2
 
-Custom music files go into the folder of the saves.
+Custom music files go into the folder of save data and its subfolders.
+It is recommended to organize your songs into subfolders so as not to mix them with the actual save files.
 The game supports subfolder selection.
 
 The filenames must end with the `.toc` extension!
 Make sure to rename your files accordingly, e.g. `We_Wish_You_a_Merry_Christmas.toc`!
+
+The game ignores songs that are shorter than 2 seconds.
 
 Find the save folder for your game version here:
 | Game Title | Region | Serial | Folder |
