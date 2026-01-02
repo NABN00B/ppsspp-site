@@ -1,6 +1,10 @@
 <div class="article">
     <div>
+        {{#if is_list_view}}
+        <h1><a href="{{ meta.url }}">{{title}}</a></h1>
+        {{else}}
         <h1>{{title}}</h1>
+        {{/if}}
     </div>
     <div class="article-infos">
         <ul>
@@ -25,13 +29,6 @@
             {{#if github_url}}<li><a href="{{ github_url }}"><i aria-label="GitHub profile" class="icon-ui icon-ui-github-alt"></i></a></li>{{/if}}
             {{/with}}
         </ul>
-    </div>
-    <div>
-        {{#if is_list_view}}
-        <h1><a href="{{ meta.url }}">{{title}}</a></h1>
-        {{else}}
-        <h1>{{title}}</h1>
-        {{/if}}
     </div>
     <div>
         {{{ contents }}}
