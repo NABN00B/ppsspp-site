@@ -14,7 +14,7 @@ You can do this by posting in the discord or emailing hrydgard+ppsspp@gmail.com.
 
 If you don't have a hostname but just an IP, specifying IP as host is fine. However, I do recommend using a hostname in case your IP needs to change in the future.
 
-Also consider adding support for status `data.json`, see [here](https://github.com/Kethen/aemu_postoffice/blob/main/hosting.md#customizing-the-http-status-page). This will allow in-app display of current games.
+Also consider adding support for status `data.json`, see [Customizing the http status page](https://github.com/Kethen/aemu_postoffice/blob/main/hosting.md#customizing-the-http-status-page) over in Kethen's documentation. This will allow an in-app listing of currently played games on your server.
 
 ## Rules
 
