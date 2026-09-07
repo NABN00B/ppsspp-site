@@ -4,9 +4,8 @@ Documentation entirely by Claude.
 
 KL4E is Sony's own compressed-executable format for the PSP, used alongside gzip as the second
 compression scheme a `~PSP` module can be packed with. KL3E is the same bitstream with one
-constant changed. Neither is implemented in PPSSPP today; this document is what can be worked
-out about the format from the available reverse-engineering work plus what a real firmware dump
-confirms, so that an implementation doesn't have to start from a bare port.
+constant changed. This document describes the format;
+everything below has been checked against a working decoder run over a real 6.61 firmware dump.
 
 It is an LZ77 scheme - a stream of "output this literal byte" and "repeat N bytes from M bytes
 back" tokens - where every individual bit is coded with an adaptive binary arithmetic coder
@@ -156,16 +155,21 @@ The very first literal is decoded with no preceding flag bit - a small saving, a
 from 2RLZ, which flags every token. After that the loop is:
 
 1. Advance the output position by one.
-2. Read one bit from `copyCountBitsProbs[state]` with profile (4, 15).
+2. Read one bit at `copyCountBitsProbs[state]` with profile (4, 15).
    - **0** - a literal. `state = max(state - 1, 0)`, then decode a literal byte. If the output
-     position has reached the end of the buffer, fail with `INVALID_SIZE` instead.
+     position has reached the end of the buffer, fail with `INVALID_SIZE`.
    - **1** - a match; continue below.
-3. Read the *length bit-count* as a unary run, using the same table, stepping the index by 8
-   each time (so `state` walks down the table's rows while its low 3 bits stay put). Count the
-   1-bits into `copyCountBits`, stopping at a 0 or at 6.
-4. Decode the length value, and pick the distance-code parameters (below).
+3. Read the *length bit-count* as a unary run, using the same table. **The index is stepped by 8
+   before each read, including the read that ends the run**, so a run that stops immediately has
+   still moved the index once. Count the 1-bits into `copyCountBits`, which starts at -1 and
+   stops at 6.
+4. Decode the length. One of its bits also selects the distance code's parameters.
 5. Decode the distance bit-count, then the distance value.
 6. Copy, then set `state = 6 + (outputPosition & 1)`.
+
+`state` is an index into `copyCountBitsProbs` that persists between tokens, and step 3 leaves it
+wherever the unary walk stopped rather than putting it back. That is why the length code's
+context uses `state & 7` - the low three bits survive the walk, and the mask is doing real work.
 
 ### Literals
 
@@ -189,8 +193,9 @@ bucket; the maximum index is `7 * 255 + 254 = 2039`, exactly filling the table.
 
 ### Match lengths
 
-`copyCountBits` from step 3 is -1 (the flag chain's first bit after the match flag was a 0) up to
-6. The value is assembled from `copyCountProbs`, at an offset built from three things:
+`copyCountBits` from step 3 runs from -1 to 6. When it is -1 the length code is empty and
+`copyCount` stays at its initial value of 1. Otherwise the code is assembled from
+`copyCountProbs` at
 
 ```
 offset = (copyCountBits << 5)
@@ -199,37 +204,128 @@ offset = (copyCountBits << 5)
 ```
 
 The alignment term vanishes for `copyCountBits >= 2` - output alignment only refines the short
-length codes. Within the selected group, bits are read at `offset + 24`, `offset + 0`,
-`offset + 8` and `offset + 16` in that order, with any middle bits of a long code read uniformly.
+length codes.
 
-The decoded `copyCountBits = -1` case never touches the table at all and leaves the length at its
-initial value. The result is a length *minus one*: the copy loop runs `copyCount + 1` times.
-Lengths therefore run from 2 bytes up to 255.
+The value is **not** a plain MSB-first read. It is built in three parts, and the order matters
+because the middle part has a side effect:
+
+```
+copyCount = 1;
+if (copyCountBits >= 3) {                       // high bits
+    copyCount = 2 + readBit(probs + 24);
+    if (copyCountBits > 3) {
+        copyCount = (copyCount << 1) | readBit(probs + 24);
+        if (copyCountBits > 4) {
+            copyCount = (copyCount << 1) | readBitUniform();
+        }
+        for (i = 5; i < copyCountBits; i++) {
+            copyCount = (copyCount << 1) | readBitUniformNoNorm();
+        }
+    }
+}
+
+copyCount <<= 1;                                // the selector bit
+if (readBit(probs + 0)) {
+    copyCount |= 1;
+    if (copyCountBits <= 0) { powLimit = long; distBase = 56 + copyCountBits; }
+} else {
+    if (copyCountBits <= 0) { powLimit = 64;   distBase = copyCountBits; }
+}
+
+if (copyCountBits > 0) {                        // low bits
+    copyCount = (copyCount << 1) | readBit(probs + 8);
+    if (copyCountBits != 1) {
+        copyCount <<= 1;
+        if (readBit(probs + 16)) {
+            copyCount++;
+            if (copyCount == 0xFF) return;      // end of stream
+        }
+    }
+    powLimit = long;  distBase = 56 + copyCountBits;
+}
+```
+
+Note that `probs + 24` is read **twice** for long codes, that the bit at `probs + 0` is the one
+that picks the distance parameters, and that `copyCountBits == 1` and `copyCountBits == 2` take
+visibly different paths through the low bits.
+
+The result is a length *minus one*: the copy loop runs `copyCount + 1` times, so lengths run from
+2 bytes up to 255.
 
 **The value 0xFF is the end-of-stream marker**, not a length. There is no output length in the
-header, and no terminator byte; the stream simply stops. This is the only normal way out of the
-loop, and it is only tested on one path (`copyCountBits > 0 && copyCountBits != 1`).
+header and no terminator byte; the stream simply stops. It is only reachable on the
+`copyCountBits > 1` path, which is the only place it is tested.
 
 ### Match distances
 
-Two parameters are chosen while decoding the length, and they are the *only* place KL3E differs
-from KL4E:
+Two parameters are chosen while decoding the length, per the code above. `powLimit` is 64 for a
+short match whose selector bit was 0, and otherwise 256 for KL4E or **128 for KL3E** - the one
+constant that separates the two formats. When `copyCountBits` is -1 the length code never runs,
+and the short parameters apply with `distBase = -1`.
 
-| Case | `powLimit` | Base into `copyDistBitsProbs` |
-| --- | --- | --- |
-| Short match, low bit of length clear | 64 | `copyCountBits` (so 0, or -1) |
-| Otherwise | 256 for KL4E, **128 for KL3E** | `56 + copyCountBits` |
+The bit-count comes from a doubling walk. The bit is read *before* the doubling is committed, and
+the extra 8 is only picked up when the walk continues:
 
-The bit-count itself is found by a doubling walk: start at `curPow = 8`, read a bit at
-`base + curPow - 7`, double `curPow`, and let `copyDistBits = curPow - powLimit`. A 1 bit adds a
-further 8 to `curPow`; the walk ends once `copyDistBits` is non-negative. A `copyDistBits` of
-exactly 0 on a 0 bit is the special "distance 0" case - a match against the immediately preceding
-byte, i.e. run-length encoding - and skips the value decode entirely.
+```
+curPow = 8;
+for (;;) {
+    prob   = copyDistBitsProbs[distBase + curPow - 7];
+    curPow <<= 1;
+    copyDistBits = curPow - powLimit;
+    if (readBit(prob) == 0) {
+        if (copyDistBits >= 0) {
+            if (copyDistBits != 0) { copyDistBits -= 8; break; }
+            distance = 0; break;          // run-length: match the byte just emitted
+        }
+    } else {
+        curPow += 8;
+        if (copyDistBits >= 0) break;
+    }
+}
+```
 
-The value is then read from `copyDistProbs[copyDistBits ..]` in the same shape as the length:
-`readBits = copyDistBits / 8` selects how many bits, read at `+3` (twice), then uniformly, then
-`+0`, `+1`, `+2`, with fiddly `+1`/`-1` adjustments in the tail that make the code ranges
-contiguous. Note `readBits` is *mutated* partway through and the later tests see the new value.
+The `copyDistBits -= 8` on the zero-bit exit is easy to miss and shifts every subsequent table
+index. A `copyDistBits` of exactly 0 reached on a 0 bit is the "distance 0" case and skips the
+value decode entirely.
+
+The value is then read from `copyDistProbs[copyDistBits ..]`, in the same three-part shape as the
+length, with `readBits = copyDistBits / 8`:
+
+```
+if (readBits < 3) {
+    copyDist = 1;
+} else {
+    copyDist = 2 + readBit(probs + 3);
+    if (readBits > 3) {
+        copyDist = (copyDist << 1) | readBit(probs + 3);
+        if (readBits > 4) {
+            copyDist = (copyDist << 1) | readBitUniform();
+            readBits--;                       // mutated - later tests see the new value
+        }
+        while (readBits > 4) {
+            copyDist = (copyDist << 1) + readBitUniformNoNorm();
+            readBits--;
+        }
+    }
+}
+
+copyDist <<= 1;
+if (readBit(probs + 0)) { if (readBits > 0)  copyDist++; }
+else                    { if (readBits <= 0) copyDist--; }
+
+if (readBits > 0) {
+    copyDist <<= 1;
+    if (readBit(probs + 1)) { if (readBits != 1) copyDist++; }
+    else                    { if (readBits == 1) copyDist--; }
+    if (readBits != 1) {
+        copyDist <<= 1;
+        if (!readBit(probs + 2)) copyDist--;
+    }
+}
+```
+
+The `+1`/`-1` adjustments are what make the code ranges for successive bit counts contiguous, and
+they depend on `readBits` *after* the decrement above, not before.
 
 Like the length, the result is a distance minus one: the source is `outputPosition - copyDist - 1`.
 It is validated against how much output exists so far, failing with
@@ -243,29 +339,33 @@ position advances by `copyCount` (not `copyCount + 1` - the loop head adds the l
 
 ## Bounds, and two real holes
 
-Everything above describes a well-formed stream. A malformed one is a different matter, and both
-of these are worth getting right in any implementation, because PPSSPP would be running this over
-data that came out of a file the user was handed:
+Everything above describes a well-formed stream. A malformed one is a different matter. Both of
+these are real in the reference and on hardware, and PPSSPP's implementation deliberately checks
+rather than reproduces them, since it runs this over a file the user was handed:
 
 **The match copy is not bounds-checked against the output buffer.** Only the literal path tests
 for it. A crafted stream can emit a match at the very end of the output and write up to 255 bytes
 past it. In the reference and in the existing PPSSPP port alike, that's a heap overflow.
 
-**`copyDistProbs` can be indexed out of range.** Walking every reachable path of the distance
-bit-count loop gives a maximum `copyDistBits` of 48 for `powLimit == 64`, 112 for 128 (KL3E) and
-240 for 256 (KL4E). The table is read at `copyDistBits + 3`, so KL3E stays inside 144 bytes but
-KL4E can reach index 243. Legitimate streams don't: a `readBits` of 17 already encodes distances
-around 2^19, far more than any PSP module needs, and that only needs index 140. But nothing in
-the format stops an encoder - or an attacker - from emitting a longer code, and there is no check.
+**`copyDistProbs` can be indexed out of range.** The distance bit-count walk can leave
+`copyDistBits` far larger than the 144-byte table allows, and the value decode reads it at
+`copyDistBits + 3`. Legitimate streams don't get anywhere near: a `readBits` of 17 already
+encodes distances around 2^19, far more than any PSP module needs, and that only needs index 140.
+But nothing in the format stops an encoder - or an attacker - from emitting a longer code, and
+there is no check.
 
 Neither is the input pointer bounded; the decoder pulls bytes as the range needs refilling and
 trusts the stream to terminate.
 
 ## Implementing it
 
-The two integration points are `sceKernelModule.cpp`, where `comp_attribute`'s bits 8-11 need to
-select KL4E over gzip (and the payload starts 4 bytes in, past the magic), and `PSARUnpack.cpp`,
-where `DetectCompression` already returns the right answer and only the decode is missing.
+A note for anyone reimplementing from this page: the arithmetic decoder, the five-byte header and
+the literal coding are straightforward and can be got right from the description alone - a decoder
+with those correct but the token grammar guessed will decode the first ~20 bytes of a real module
+and then diverge, which makes for a confusing debugging session. The ELF header of a decompressed
+PRX is a good oracle while working: `7f 45 4c 46 01 01 01 00`, eight zero bytes, then `a0 ff`
+(`ET_PSP_PRX`) and `08 00` (`EM_MIPS`), and the decompressed size must equal the `elf_size` field
+at offset 0x28 of the `~PSP` header.
 
 One subtlety in any port: The original code indexes several contexts by the low bits of *pointers* -
 `curOut & 7`, `curOut & 3`, `curOut & 1`, and `curCopyCountBitsProbs & 7`. Both the C reference
@@ -276,6 +376,10 @@ reading - but a from-scratch implementation should use offsets deliberately rath
 reproducing the pointer arithmetic and hoping the allocator cooperates.
 
 ## Sources
+
+The token grammar above was corrected against `kl4e.c` (below) after an attempt to implement the
+format from the earlier revision of this page failed; everything on this page has since been
+checked against a decoder that decompresses all 129 `kd/` modules of a 6.61 dump.
 
 - `kl4e.c` in [John-K/pspdecrypt](https://github.com/John-K/pspdecrypt) - the primary source.
   Reverse engineered from 6.60 firmware by artart78, from `UtilsForKernel_6C6887EE` in
